@@ -34,4 +34,8 @@ ext {
     retrofitVersion= '2.3.0'
     gsonVersion = '2.8.2'
     butterknifeVersion = '8.8.1'
+
+    // API constants
+    apiKey = '"b98245995804c7d30a9b2a62e72eb222"'
+    baseUrl = '"https://api.themoviedb.org/3/"'
 }

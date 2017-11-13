@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 
 import java.util.List;
 
-import io.reactivex.Flowable;
+import io.reactivex.Single;
 import me.test.davidllorca.topmovies.data.model.Movie;
 
 /**
@@ -43,12 +43,12 @@ public class MoviesRepository implements MoviesDataSource {
     }
 
     @Override
-    public Flowable<List<Movie>> getTopRated() {
+    public Single<List<Movie>> getTopRated() {
         return mRemoteDataSource.getTopRated();
     }
 
     @Override
-    public Flowable<List<Movie>> getSimilar(String movieId) {
+    public Single<List<Movie>> getSimilar(String movieId) {
         return mRemoteDataSource.getSimilar(movieId);
     }
 }

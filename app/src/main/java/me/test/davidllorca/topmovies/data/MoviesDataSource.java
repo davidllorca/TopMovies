@@ -2,7 +2,7 @@ package me.test.davidllorca.topmovies.data;
 
 import java.util.List;
 
-import io.reactivex.Flowable;
+import io.reactivex.Single;
 import me.test.davidllorca.topmovies.data.model.Movie;
 
 /**
@@ -10,8 +10,8 @@ import me.test.davidllorca.topmovies.data.model.Movie;
  */
 public interface MoviesDataSource {
 
-    Flowable<List<Movie>> getTopRated();
+    Single<List<Movie>> getTopRated();
 
-    Flowable<List<Movie>> getSimilar(String movieId);
+    Single<List<Movie>> getSimilar(String movieId);
 
 }
