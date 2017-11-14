@@ -8,4 +8,37 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Widget.CollapsingToolbar" parent="">
+        <item name="collapsedTitleTextAppearance">@style/TextAppearance.Logo</item>
+        <item name="contentScrim">?attr/colorPrimary</item>
+        <item name="expandedTitleGravity">top</item>
+        <item name="expandedTitleMarginStart">124dp</item>
+        <item name="expandedTitleMarginTop">140dp</item>
+        <item name="expandedTitleTextAppearance">@style/TextAppearance.Logo</item>
+        <item name="scrimVisibleHeightTrigger">140dp</item>
+    </style>
+
+    <style name="Widget.CollapsingToolbarImage" parent="">
+        <item name="android:layout_marginTop">48dp</item>
+        <item name="android:layout_marginLeft">-124dp</item>
+        <item name="android:adjustViewBounds">true</item>
+    </style>
+
+    <style name="Widget.CollapsingToolbarContent" parent="">
+        <item name="android:layout_marginTop">160dp</item>
+        <item name="android:layout_marginLeft">124dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_gravity">top</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
 </resources>
