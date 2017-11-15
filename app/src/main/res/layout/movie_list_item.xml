@@ -12,6 +12,13 @@
         android:orientation="vertical"
         android:padding="8dp">
 
+        <ImageView
+            android:id="@+id/img_movie_item_poster"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter" />
+
         <TextView
             android:id="@+id/tv_movie_item_title"
             android:layout_width="wrap_content"
@@ -20,19 +27,13 @@
             android:textColor="#0a3142"
             android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/img_movie_item_poster"
-            android:layout_width="wrap_content"
-            android:layout_height="192dp"
-            android:layout_gravity="center"
-            android:scaleType="fitCenter" />
-
         <ImageButton
             android:id="@+id/img_btn_tv_movie_item_average"
             style="?android:attr/actionButtonStyle"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="end"
-            android:minWidth="48dp" />
+            android:minWidth="48dp"
+            android:visibility="gone" />
     </LinearLayout>
 </android.support.v7.widget.CardView>

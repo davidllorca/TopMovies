@@ -15,13 +15,9 @@ import com.squareup.picasso.Picasso;
 import me.test.davidllorca.topmovies.BuildConfig;
 import me.test.davidllorca.topmovies.R;
 import me.test.davidllorca.topmovies.data.model.Movie;
-import me.test.davidllorca.topmovies.ui.movielist.MovieListActivity;
 
 /**
- * A fragment representing a single Movie detail screen.
- * This fragment is either contained in a {@link MovieListActivity}
- * in two-pane mode (on tablets) or a {@link MovieDetailActivity}
- * on handsets.
+ * TODO
  */
 public class MovieDetailFragment extends Fragment {
 
@@ -35,7 +31,7 @@ public class MovieDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mItem = getArguments().getParcelable(MovieDetailActivity.MOVIE);
+            mItem = getArguments().getParcelable(MovieDetailActivity.MOVIE_KEY);
 
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity

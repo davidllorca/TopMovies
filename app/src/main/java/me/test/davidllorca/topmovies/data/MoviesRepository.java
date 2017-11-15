@@ -43,12 +43,11 @@ public class MoviesRepository implements MoviesDataSource {
     }
 
     @Override
-    public Single<List<Movie>> getTopRated() {
-        return mRemoteDataSource.getTopRated();
+    public Single<List<Movie>> getTopRated(int offset) {
+        return mRemoteDataSource.getTopRated(offset);
     }
 
-    @Override
-    public Single<List<Movie>> getSimilar(String movieId) {
-        return mRemoteDataSource.getSimilar(movieId);
+    public Single<List<Movie>> getSimilar(int targetMovieId, int offset) {
+        return mRemoteDataSource.getSimilar(targetMovieId, offset);
     }
 }

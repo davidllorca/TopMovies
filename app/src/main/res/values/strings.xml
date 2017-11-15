@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">TopMovies</string>
+
+    <string name="title_activity_home">HomeActivity</string>
     <string name="title_movie_list">Movies</string>
     <string name="title_movie_detail">Movie Detail</string>
 </resources>

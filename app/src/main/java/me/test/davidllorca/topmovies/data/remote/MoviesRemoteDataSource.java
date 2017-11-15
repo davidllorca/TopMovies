@@ -16,7 +16,6 @@ public class MoviesRemoteDataSource implements MoviesDataSource {
     private static final Object LOCK = new Object();
     private static MoviesRemoteDataSource sInstance;
     MovieService mService;
-    private MoviesDataSource mRemoteDataSource;
 
     private MoviesRemoteDataSource() {
         mService = RetrofitHelper.createRetrofitService(MovieService.class);
@@ -35,14 +34,15 @@ public class MoviesRemoteDataSource implements MoviesDataSource {
         }
         return sInstance;
     }
+
     @Override
-    public Single<List<Movie>> getTopRated() {
-        return mService.getTopRated().map(response -> response.getMovies());
+    public Single<List<Movie>> getTopRated(int offset) {
+        return mService.getTopRated(offset).map(response -> response.getMovies());
     }
 
     @Override
-    public Single<List<Movie>> getSimilar(String movieId) {
-        return mService.getSimilar(movieId).map(response -> response.getMovies());
+    public Single<List<Movie>> getSimilar(int targetMovieId, int offset) {
+        return mService.getSimilar(targetMovieId, offset).map(response -> response.getMovies());
     }
 
 }

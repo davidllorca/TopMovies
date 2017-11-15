@@ -59,6 +59,13 @@
             android:textIsSelectable="true" />
     </android.support.v4.widget.NestedScrollView>
 
+    <FrameLayout
+        android:id="@+id/container_movie_detail_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom">
+
+    </FrameLayout>
     <!-- TODO DELETE/IMPLEMENT SUPPORT TEXT FEATURE -->
     <!--<android.support.design.widget.FloatingActionButton-->
     <!--android:id="@+id/fab"-->

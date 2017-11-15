@@ -10,8 +10,8 @@ import me.test.davidllorca.topmovies.data.model.Movie;
  */
 public interface MoviesDataSource {
 
-    Single<List<Movie>> getTopRated();
+    Single<List<Movie>> getTopRated(int offset);
 
-    Single<List<Movie>> getSimilar(String movieId);
+    Single<List<Movie>> getSimilar(int targetMovieId, int offset);
 
 }
