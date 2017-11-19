@@ -13,14 +13,13 @@ public interface MovieListContract {
 
         void showMovies(List<Movie> movies);
 
-        void append(List<Movie> movies);
     }
 
     interface Presenter {
 
         void loadMovies(int offset);
 
-        void loadMovies(int targetMovieId, int offset);
+        void loadSimilarMovies(int targetMovieId, int offset);
     }
 
 }

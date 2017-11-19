@@ -3,7 +3,7 @@ package me.test.davidllorca.topmovies.ui.moviedetail;
 import me.test.davidllorca.topmovies.data.model.Movie;
 
 /**
- * Contract between the View and the Presenter.
+ * Contract of UI/Presenter.
  */
 public interface MovieDetailContract {
 

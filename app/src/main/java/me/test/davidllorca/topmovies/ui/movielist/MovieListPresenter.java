@@ -13,30 +13,31 @@ public class MovieListPresenter implements MovieListContract.Presenter {
 
     private static final String LOG_TAG = MovieListPresenter.class.getSimpleName();
 
-    private MoviesRepository mRepository;
-
     private MovieListContract.View mView;
 
-    public MovieListPresenter(MovieListContract.View view, MoviesRepository repository) {
+    private MoviesRepository mRepository;
+
+    MovieListPresenter(MovieListContract.View view, MoviesRepository repository) {
         mView = view;
         mRepository = repository;
     }
 
+    @Override
     public void loadMovies(int offset) {
         mRepository.getTopRated(offset)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(movies -> mView.append(movies),
-                        throwable -> Log.e(LOG_TAG, throwable.getMessage())); // TODO UI BLANK
-        // SCREEN
+                .subscribe(movies -> mView.showMovies(movies),
+                        throwable -> Log.e(LOG_TAG, throwable.getMessage()));
     }
 
     @Override
-    public void loadMovies(int targetMovieId, int offset) {
+    public void loadSimilarMovies(int targetMovieId, int offset) {
         mRepository.getSimilar(targetMovieId, offset)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(movies -> mView.append(movies),
+                .subscribe(movies -> mView.showMovies(movies),
                         throwable -> Log.e(LOG_TAG, throwable.getMessage()));
     }
+
 }

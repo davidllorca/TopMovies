@@ -7,8 +7,6 @@ import me.test.davidllorca.topmovies.data.MoviesRepository;
  */
 public class MovieDetailPresenter implements MovieDetailContract.Presenter {
 
-    private static final String LOG_TAG = MovieDetailPresenter.class.getSimpleName();
-
     private MovieDetailContract.View mView;
 
     private MoviesRepository mRepository;
@@ -20,7 +18,7 @@ public class MovieDetailPresenter implements MovieDetailContract.Presenter {
 
     @Override
     public void loadMovie() {
-        // TODO
+        // TODO: Next features. Calls to API to ge more information of film.
     }
 
 }

@@ -1,6 +1,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator_movie_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -10,7 +11,7 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_movie_detail"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_height"
+        android:layout_height="@dimen/app_bar_image_height"
         android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
@@ -25,9 +26,9 @@
 
             <ImageView
                 android:id="@+id/img_movie_detail_app_bar"
-                style="@style/Widget.CollapsingToolbarImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.75" />
 
@@ -45,36 +46,27 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
-        android:id="@+id/view_movie_detail_overview"
+        android:id="@+id/movie_detail_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <TextView
-            android:id="@+id/tv_movie_detail_overview"
-            style="?android:attr/textAppearanceLarge"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="16dp"
-            android:textIsSelectable="true" />
+        <include layout="@layout/content_movie_detail" />
+
     </android.support.v4.widget.NestedScrollView>
 
-    <FrameLayout
-        android:id="@+id/container_movie_detail_footer"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tv_movie_detail_average"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom">
-
-    </FrameLayout>
-    <!-- TODO DELETE/IMPLEMENT SUPPORT TEXT FEATURE -->
-    <!--<android.support.design.widget.FloatingActionButton-->
-    <!--android:id="@+id/fab"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="center_vertical|start"-->
-    <!--android:layout_margin="@dimen/fab_margin"-->
-    <!--app:layout_anchor="@+id/movie_detail_container"-->
-    <!--app:layout_anchorGravity="top|end"-->
-    <!--app:srcCompat="@android:drawable/stat_notify_chat" />-->
+        android:layout_gravity="center_vertical|start"
+        android:layout_margin="@dimen/fab_margin"
+        android:background="@drawable/shape_oval_accent"
+        android:padding="18dp"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_anchor="@id/toolbar_layout_movie_detail"
+        app:layout_anchorGravity="bottom|right|end" />
 
 </android.support.design.widget.CoordinatorLayout>

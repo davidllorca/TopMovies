@@ -6,7 +6,7 @@ import io.reactivex.Single;
 import me.test.davidllorca.topmovies.data.model.Movie;
 
 /**
- * Contract between data source and {@link MoviesRepository}.
+ * Contract between data sources and {@link MoviesRepository}.
  */
 public interface MoviesDataSource {
 

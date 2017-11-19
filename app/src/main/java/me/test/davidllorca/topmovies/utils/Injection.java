@@ -1,4 +1,4 @@
-package me.test.davidllorca.topmovies;
+package me.test.davidllorca.topmovies.utils;
 
 import me.test.davidllorca.topmovies.data.MoviesRepository;
 import me.test.davidllorca.topmovies.data.remote.MoviesRemoteDataSource;

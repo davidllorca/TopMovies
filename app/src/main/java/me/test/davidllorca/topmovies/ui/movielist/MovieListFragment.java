@@ -11,68 +11,84 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.squareup.picasso.Picasso;
-
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import me.test.davidllorca.topmovies.BuildConfig;
-import me.test.davidllorca.topmovies.Injection;
 import me.test.davidllorca.topmovies.R;
 import me.test.davidllorca.topmovies.data.model.Movie;
 import me.test.davidllorca.topmovies.ui.EndlessRecyclerViewScrollListener;
+import me.test.davidllorca.topmovies.utils.Injection;
 
-/**
- * TODO
- */
-public class MovieListFragment extends Fragment implements MovieListContract.View {
+public class MovieListFragment extends Fragment implements MovieListContract.View,
+        MovieItemAdapter.OnMovieItemAdapterListener {
 
-    private static final String TYPE_GRID_LAYOUT = "type_grid_layout";
-    private static final String TYPE_LINEAR_LAYOUT = "type_linear_layout";
+    private static final String TYPE_LAYOUT_KEY = "type_layout_list";
+    private static final int TYPE_GRID_LAYOUT = 0;
+    private static final int TYPE_LINEAR_LAYOUT = 1;
+
     private static final String N_COLUMNS_KEY = "n_columns_key";
     private static final String TARGET_MOVIE_KEY = "target_movie";
 
+    /* VIEWS */
     @BindView(R.id.rv_fragment_movie_list)
     RecyclerView mList;
 
+
+    /**
+     * Implementation of {@link MovieListContract.Presenter}
+     */
     private MovieListPresenter mPresenter;
 
-    private Movie mTargetItem;
+    /**
+     * Adapter of RecyclerView.
+     */
+    private MovieItemAdapter mAdapter;
 
-    private MovieItemRecyclerViewAdapter mAdapter;
-    private EndlessRecyclerViewScrollListener mScrollListener;
+    /*
+     * Callbacks to fragment host.
+     */
 
-    private OnMovieListFragmentListener mListener;
+    private OnMovieListFragmentListener.OnClick mHostClickListener;
+    private OnMovieListFragmentListener.OnLoading mHostLoadingListener;
+    private OnMovieListFragmentListener.OnScroll mHostScrollListener;
+
+    /**
+     * Target movie to load similar movies.
+     */
+    private Movie mTargetMovie;
 
     public MovieListFragment() {
     }
 
-    public static MovieListFragment newInstanceAsGridLayout(int nColumns) {
+    /**
+     * Constructor with params to set LinearLayout configuration.
+     *
+     * @param movie Target movie.
+     * @return MovieListFragment.
+     */
+    public static MovieListFragment newInstanceAsLinearLayout(Movie movie) {
         MovieListFragment fragment = new MovieListFragment();
         Bundle args = new Bundle();
-        args.putBoolean(TYPE_GRID_LAYOUT, true);
-        args.putInt(N_COLUMNS_KEY, nColumns);
+        args.putInt(TYPE_LAYOUT_KEY, TYPE_LINEAR_LAYOUT);
+        args.putParcelable(TARGET_MOVIE_KEY, movie);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public static MovieListFragment newInstanceAsLinearLayout(Movie item) {
+    /**
+     * Constructor with params to set GridLayout configuration. It's the default Configuration.
+     *
+     * @param nColumns Numbers of column's grid.
+     * @return MovieListFragment.
+     */
+    public static MovieListFragment newInstanceAsGridLayout(int nColumns) {
         MovieListFragment fragment = new MovieListFragment();
         Bundle args = new Bundle();
-        args.putBoolean(TYPE_LINEAR_LAYOUT, true);
-        args.putParcelable(TARGET_MOVIE_KEY, item);
+        args.putInt(TYPE_LAYOUT_KEY, TYPE_GRID_LAYOUT);
+        args.putInt(N_COLUMNS_KEY, nColumns);
         fragment.setArguments(args);
         return fragment;
     }
@@ -80,6 +96,8 @@ public class MovieListFragment extends Fragment implements MovieListContract.Vie
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Init presenter
         mPresenter = new MovieListPresenter(this, Injection.provideMoviesRepository());
     }
 
@@ -97,12 +115,14 @@ public class MovieListFragment extends Fragment implements MovieListContract.Vie
 
         Bundle arguments = getArguments();
         if (arguments == null) {
+            // Default setup as gridlayout.
             setupRecyclerView(mList, getResources().getInteger(R.integer
                     .movie_list_column_count_default));
         } else {
-            mTargetItem = arguments.getParcelable(TARGET_MOVIE_KEY);
+            mTargetMovie = arguments.getParcelable(TARGET_MOVIE_KEY);
             setupRecyclerView(mList, arguments.getInt(N_COLUMNS_KEY, 1));
         }
+
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView, @Nullable
@@ -112,19 +132,30 @@ public class MovieListFragment extends Fragment implements MovieListContract.Vie
                 new LinearLayoutManager(getContext(), LinearLayout.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
-        mScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+        // Implementation of ScrollListener with loading callback events.
+        EndlessRecyclerViewScrollListener mScrollListener = new EndlessRecyclerViewScrollListener
+                (layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 loadNextData(page);
             }
+
+            @Override
+            public void onItemVisibilityStates(boolean isFirstItemVisible, boolean
+                    isLastItemVisible) {
+                if (mHostScrollListener != null)
+                    mHostScrollListener.onItemVisibilityStates(isFirstItemVisible,
+                            isLastItemVisible);
+            }
         };
         recyclerView.addOnScrollListener(mScrollListener);
 
-        if (mTargetItem != null) {
-            mAdapter = new MovieItemRecyclerViewAdapter(getContext(), mTargetItem, mListener);
-        } else {
-            mAdapter = new MovieItemRecyclerViewAdapter(getContext(), mListener);
-        }
+        mAdapter = new MovieItemAdapter(getContext(), nColumns > 1 ?
+                MovieItemAdapter.GRID_LAYOUT : MovieItemAdapter.LINEAR_HORIZONTAL_LAYOUT,
+                this);
+
+        // If target movie exists showMovies it to data set.
+        if (mTargetMovie != null) mAdapter.append(mTargetMovie);
 
         recyclerView.setAdapter(mAdapter);
     }
@@ -136,144 +167,86 @@ public class MovieListFragment extends Fragment implements MovieListContract.Vie
             loadNextData(1);
     }
 
-    // TODO CUSTOMIZE
-    // Append the next page of data into the adapter
-    // This method probably sends out a network request and appends new data items to your adapter.
+
     public void loadNextData(int offset) {
-        append(getMockMovies());
-        //        if (mTargetItem == null) {
-//            mPresenter.loadMovies(offset);
-//        } else {
-//            mPresenter.loadMovies(mTargetItem.getId(), offset);
-//        }
+        if (mHostLoadingListener != null) mHostLoadingListener.onLoading(true);
+        if (mTargetMovie == null) {
+            mPresenter.loadMovies(offset);
+        } else {
+            mPresenter.loadSimilarMovies(mTargetMovie.getId(), offset);
+        }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnMovieListFragmentListener) {
-            mListener = (OnMovieListFragmentListener) context;
+        // Just OnClick listener is mandatory.
+        if (context instanceof OnMovieListFragmentListener.OnClick) {
+            mHostClickListener = (OnMovieListFragmentListener.OnClick) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnMovieListFragmentListener");
+                    + " must implement OnMovieListFragmentListener.OnClick");
+        }
+        if (context instanceof OnMovieListFragmentListener.OnLoading) {
+            mHostLoadingListener = (OnMovieListFragmentListener.OnLoading) context;
+        }
+        if (context instanceof OnMovieListFragmentListener.OnScroll) {
+            mHostScrollListener = (OnMovieListFragmentListener.OnScroll) context;
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        mHostClickListener = null;
+        mHostLoadingListener = null;
+        mHostScrollListener = null;
     }
 
     @Override
     public void showMovies(List<Movie> movies) {
-        mAdapter.loadData(movies);
+        mAdapter.appendAll(movies);
+        if (mHostLoadingListener != null) mHostLoadingListener.onLoading(false);
     }
 
     @Override
-    public void append(List<Movie> movies) {
-        mAdapter.append(movies);
+    public void onClickItem(Movie movie) {
+        if (mHostClickListener != null) mHostClickListener.onMovieClicked(movie);
     }
 
-    //TODO remove on release
-    private List<Movie> getMockMovies() {
-        Gson gson = new Gson();
-        Reader reader = new InputStreamReader(getResources()
-                .openRawResource(R.raw.data));
-        Type type = new TypeToken<List<Movie>>() {
-        }.getType();
-        return gson.fromJson(reader, type);
-    }
 
+    /**
+     * Interfaces between {@link MovieListFragment} and its host.
+     */
     public interface OnMovieListFragmentListener {
-        void onClickItem(Movie movie);
+
+        interface OnClick {
+
+            /**
+             * Called on click event on collection.
+             */
+            void onMovieClicked(Movie movie);
+
+        }
+
+        interface OnLoading {
+
+            /**
+             * Called on start/end loading operations.
+             */
+            void onLoading(boolean isLoading);
+
+        }
+
+        interface OnScroll {
+
+            /**
+             * Called on scroll events.
+             */
+            void onItemVisibilityStates(boolean isFirstItemVisible, boolean isLastItemVisible);
+
+        }
+
     }
 
-    public static class MovieItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<MovieItemRecyclerViewAdapter.ViewHolder> {
-
-        private final List<Movie> mDataSet;
-        private final Context mContext;
-        private final OnMovieListFragmentListener mListener;
-
-        MovieItemRecyclerViewAdapter(Context context, OnMovieListFragmentListener listener) {
-            mContext = context;
-            mDataSet = new ArrayList<>();
-            mListener = listener;
-        }
-
-        MovieItemRecyclerViewAdapter(Context context, Movie targetItem,
-                                     OnMovieListFragmentListener listener) {
-            mContext = context;
-            mDataSet = new ArrayList<>();
-            mDataSet.add(targetItem);
-            mListener = listener;
-        }
-
-        @Override
-        public MovieItemRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int
-                viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.movie_list_item, parent, false);
-            return new MovieItemRecyclerViewAdapter.ViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(final MovieItemRecyclerViewAdapter.ViewHolder holder, int
-                position) {
-            Movie item = mDataSet.get(position);
-            holder.mTitle.setText(item.getTitle());
-//            holder.mAverage.setText(item.getVoteAverage());TODO
-            Picasso.with(mContext)
-                    .load(BuildConfig.BASE_IMAGE_URL + item.getPosterPath())
-                    .into(holder.mPoster);
-
-            holder.itemView.setOnClickListener(v -> {
-//                if (mTwoPane) {// TODO TABLE UI
-//                    Bundle arguments = new Bundle();
-//                    arguments.putParcelable(MovieDetailActivity.MOVIE_KEY, item);
-//                    MovieDetailFragment fragment = new MovieDetailFragment();
-//                    fragment.setArguments(arguments);
-//                    mParentActivity.getSupportFragmentManager().beginTransaction()
-//                            .replace(R.id.view_movie_detail_overview, fragment)
-//                            .commit();
-//                } else {
-//                    Context context = v.getContext();
-//                    Intent intent = MovieDetailActivity.getIntentByMovie(context, item);
-//                    context.startActivity(intent);
-//                }
-                mListener.onClickItem(item);
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return mDataSet.size();
-        }
-
-        public void loadData(List<Movie> items) {
-            mDataSet.clear();
-            mDataSet.addAll(items);
-            notifyDataSetChanged();
-        }
-
-        public void append(List<Movie> items) {
-            mDataSet.addAll(items);
-            notifyDataSetChanged();
-        }
-
-        class ViewHolder extends RecyclerView.ViewHolder {
-            @BindView(R.id.tv_movie_item_title)
-            TextView mTitle;
-            @BindView(R.id.img_movie_item_poster)
-            ImageView mPoster;
-            @BindView(R.id.img_btn_tv_movie_item_average)
-            ImageButton mAverage;
-
-            ViewHolder(View view) {
-                super(view);
-                ButterKnife.bind(this, view);
-            }
-        }
-    }
 }

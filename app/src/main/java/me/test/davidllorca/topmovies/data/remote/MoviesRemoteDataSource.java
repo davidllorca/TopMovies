@@ -4,11 +4,10 @@ import java.util.List;
 
 import io.reactivex.Single;
 import me.test.davidllorca.topmovies.data.MoviesDataSource;
-import me.test.davidllorca.topmovies.data.MoviesRepository;
 import me.test.davidllorca.topmovies.data.model.Movie;
 
 /**
- * Implementation of remote data source.
+ * Logic implementation of remote data source.
  */
 public class MoviesRemoteDataSource implements MoviesDataSource {
 
@@ -24,7 +23,7 @@ public class MoviesRemoteDataSource implements MoviesDataSource {
     /**
      * Return single instance of remote data client.
      *
-     * @return {@link MoviesRepository} instance.
+     * @return {@link MoviesRemoteDataSource} instance.
      */
     public static synchronized MoviesRemoteDataSource getInstance() {
         if (sInstance == null) {

@@ -7,29 +7,28 @@ import java.util.List;
 import me.test.davidllorca.topmovies.data.model.Movie;
 
 /**
- * Created by David Llorca <davidllorcabaron@gmail.com> on 13/11/17.
+ * Response's model of movie list.
  */
-
 public class MovieListResponse {
 
     @SerializedName("page")
-    int page;
+    private int page;
 
     @SerializedName("results")
-    List<Movie> movies;
+    private List<Movie> movies;
 
     @SerializedName("total_pages")
-    int totalPages;
+    private int totalPages;
 
-    public int getPage() {
+    int getPage() {
         return page;
     }
 
-    public List<Movie> getMovies() {
+    List<Movie> getMovies() {
         return movies;
     }
 
-    public int getTotalPages() {
+    int getTotalPages() {
         return totalPages;
     }
 }

@@ -1,0 +1,9 @@
+<ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pb_fragment_movie_list"
+    style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:background="@color/colorPrimary"
+    android:gravity="center_horizontal"
+    android:indeterminate="true" />

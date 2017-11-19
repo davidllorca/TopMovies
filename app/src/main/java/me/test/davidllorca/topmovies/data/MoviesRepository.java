@@ -13,7 +13,7 @@ import me.test.davidllorca.topmovies.data.model.Movie;
  * <p>
  * (NOTE: Just remote source covered)
  */
-public class MoviesRepository implements MoviesDataSource {
+public class MoviesRepository {
 
     //Singleton instantiation
     private static final Object LOCK = new Object();
@@ -42,7 +42,6 @@ public class MoviesRepository implements MoviesDataSource {
         return sInstance;
     }
 
-    @Override
     public Single<List<Movie>> getTopRated(int offset) {
         return mRemoteDataSource.getTopRated(offset);
     }

@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorBackgroundDark</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -18,27 +19,34 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="Widget.CollapsingToolbar" parent="">
-        <item name="collapsedTitleTextAppearance">@style/TextAppearance.Logo</item>
+        <item name="collapsedTitleTextAppearance">@style/Widget.CollapsingToolbar</item>
         <item name="contentScrim">?attr/colorPrimary</item>
-        <item name="expandedTitleGravity">top</item>
+        <item name="expandedTitleGravity">center_horizontal|top</item>
         <item name="expandedTitleMarginStart">124dp</item>
-        <item name="expandedTitleMarginTop">140dp</item>
-        <item name="expandedTitleTextAppearance">@style/TextAppearance.Logo</item>
+        <item name="expandedTitleMarginTop">75dp</item>
+        <item name="expandedTitleTextAppearance">@style/TitleTextAppearance</item>
         <item name="scrimVisibleHeightTrigger">140dp</item>
     </style>
 
-    <style name="Widget.CollapsingToolbarImage" parent="">
-        <item name="android:layout_marginTop">48dp</item>
-        <item name="android:layout_marginLeft">-124dp</item>
-        <item name="android:adjustViewBounds">true</item>
+    <style name="TitleTextAppearance" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">36sp</item>
     </style>
 
-    <style name="Widget.CollapsingToolbarContent" parent="">
-        <item name="android:layout_marginTop">160dp</item>
-        <item name="android:layout_marginLeft">124dp</item>
-        <item name="android:layout_marginRight">16dp</item>
-        <item name="android:layout_gravity">top</item>
-        <item name="android:orientation">vertical</item>
+    <style name="BlockContentLayout" parent="AppTheme">
+        <item name="android:background">@drawable/shape_square_rounded_light</item>
+        <item name="android:layout_margin">@dimen/default_margin</item>
+        <item name="android:padding">@dimen/default_padding</item>
+
     </style>
+
+    <style name="BlockHeadlineTextView" parent="AppTheme">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginTop">@dimen/default_margin</item>
+        <item name="android:layout_marginBottom">@dimen/default_margin</item>
+    </style>
+
 
 </resources>
