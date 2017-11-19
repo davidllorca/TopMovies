@@ -16,3 +16,4 @@ Once in the detail view, the user should be able to navigate between similar tv 
 - View binding by [Butterknife](https://github.com/JakeWharton/butterknife)
 - Image downloading/caching operations by [Picasso](http://square.github.io/picasso/)
    
+[**Download apk**](https://drive.google.com/open?id=1fzRuO9Lz4fP-MGrCXbdsLmwjx1RA3WNs) if there are any build or configuration problem.
