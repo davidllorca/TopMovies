@@ -26,7 +26,6 @@
         android:padding="@dimen/default_padding"
         android:text="title"
         android:textAlignment="center"
-        android:textColor="#0a3142"
-        android:textStyle="bold" />
+        android:textColor="#0a3142" />
 
 </LinearLayout>

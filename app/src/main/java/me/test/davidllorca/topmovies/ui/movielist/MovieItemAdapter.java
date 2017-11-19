@@ -33,6 +33,7 @@ public class MovieItemAdapter
 
     public static final int LINEAR_HORIZONTAL_LAYOUT = 0;
     public static final int GRID_LAYOUT = 1;
+
     private final Context mContext;
     private final List<Movie> mDataSet;
     private final OnMovieItemAdapterListener mListener;
@@ -69,13 +70,13 @@ public class MovieItemAdapter
     public void onBindViewHolder(final MovieItemAdapter.ViewHolder holder, int
             position) {
         Movie item = mDataSet.get(position);
-        //TODO
+
         SpannableStringBuilder sb = new SpannableStringBuilder();
         sb.append(item.getTitle() + " - ");
         int start = sb.length();
         sb.append(TopMoviesUtils.getRoundedAverageStr(item.getVoteAverage()));
         sb.setSpan(new StyleSpan(BOLD), start, sb
-                .length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                .length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         holder.mTitle.setText(sb);
 
         Picasso.with(mContext)
@@ -97,8 +98,9 @@ public class MovieItemAdapter
     }
 
     public void appendAll(List<Movie> items) {
+        int initPos = mDataSet.size();
         mDataSet.addAll(items);
-        notifyDataSetChanged();
+        notifyItemRangeInserted(initPos, items.size());
     }
 
     public interface OnMovieItemAdapterListener {

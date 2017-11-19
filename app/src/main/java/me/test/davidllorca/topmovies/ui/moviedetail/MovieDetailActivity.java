@@ -9,6 +9,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -43,6 +44,8 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     CollapsingToolbarLayout mCollapsingToolbarLayout;
     @BindView(R.id.toolbar_movie_detail)
     Toolbar mToolbar;
+    @BindView(R.id.movie_detail_container)
+    NestedScrollView mContainerDetail;
     @BindView(R.id.img_movie_detail_app_bar)
     ImageView mPosterImageView;
     @BindView(R.id.tv_movie_detail_average)
@@ -133,7 +136,10 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     @Override
     public void showMovie(@NonNull Movie movie) {
         if (mCollapsingToolbarLayout != null) {
+            // Animate
             mAppbarLayout.setExpanded(true, true);
+            mContainerDetail.smoothScrollTo(0, 0);
+            // Show data
             mCollapsingToolbarLayout.setTitle(movie.getTitle());
             mAverageTextView.setText(TopMoviesUtils.getRoundedAverageStr(movie.getVoteAverage()));
             Picasso.with(this)
