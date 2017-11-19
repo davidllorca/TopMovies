@@ -30,7 +30,7 @@
 
     <style name="TitleTextAppearance" parent="TextAppearance.AppCompat.Title">
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">36sp</item>
+        <item name="android:textSize">32sp</item>
     </style>
 
     <style name="BlockContentLayout" parent="AppTheme">
