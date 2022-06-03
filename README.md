@@ -1,6 +1,6 @@
 # Top Movies [Test project]
 
-## Specs
+## Specs
 
 - Create a view that contains an infinite scroll list with the most popular tv shows. Use the following [endpoint](https://developers.themoviedb.org/3/movies/get-top-rated-movies)
 - Each item of the list should contain an image, the tv show title and the vote average fields.
