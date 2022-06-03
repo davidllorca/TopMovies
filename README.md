@@ -14,7 +14,7 @@
 - Nice ui
 - Wow factor
 
-# Rules
+## Rules
 
 Create a commit history that makes sense
 The final code to evaluate must be in the master branch
